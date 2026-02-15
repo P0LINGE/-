@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Conexión Viva 💞</title>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+</head>
+
+<body style="text-align:center;font-family:Arial;background:#fff0f5">
+
+<h2>💓 Conexión Viva</h2>
+<p id="estado">Esperando señal…</p>
+
+<button onclick="enviar('LATIDO')">💓 Latido</button><br><br>
+<button onclick="enviar('ABRAZO')">🤍 Abrazo</button><br><br>
+<button onclick="enviar('ARCOIRIS')">🌈 Arcoíris</button>
+
+<script>
+const client = mqtt.connect("wss://broker.hivemq.com:8884/mqtt");
+
+client.on("connect",()=>{
+  client.subscribe("amor/estado");
+});
+
+client.on("message",(t,m)=>{
+  document.getElementById("estado").innerText = m.toString();
+});
+
+function enviar(cmd){
+  client.publish("amor/comando",cmd);
+}
+</script>
+
+</body>
+</html>
